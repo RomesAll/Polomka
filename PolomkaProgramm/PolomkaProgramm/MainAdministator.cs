@@ -12,7 +12,7 @@ namespace PolomkaProgramm
 {
     public partial class MainAdministator : Form
     {
-        static public bool[] mass = new bool[] { false, false, false, false };
+        static public bool[] mass = new bool[] { true, false, false, false };
         static public int[] numbers;
         static public bool Str10 = false;
         static public bool Str20 = false;
@@ -30,8 +30,8 @@ namespace PolomkaProgramm
             button3.Click += (s, e) =>
             {
                 int i = 0;
-                int[] numbers = new int[dataGridView1.Rows.Count - 1];
-                for (i = 0; i < dataGridView1.Rows.Count - 1; i++)
+                int[] numbers = new int[dataGridView1.Rows.Count];
+                for (i = 0; i < dataGridView1.Rows.Count; i++)
                 {
                     element = dataGridView1["ID", i].Value.ToString();
                     numbers[i] = Convert.ToInt32(dataGridView1["ID", i].Value.ToString());
@@ -40,19 +40,28 @@ namespace PolomkaProgramm
                 switch (i)
                 {
                     case 10:
-                        ClientClass.SelectClientBetween(Convert.ToInt32(element) + 1, Convert.ToInt32(element) + 10);
-                        dataGridView1.DataSource = ClientClass.DtClientBetween;
-                        Str10 = true;
+                        if (mass[0] == true)
+                        {
+                            ClientClass.SelectClientBetween(Convert.ToInt32(element) + 1, Convert.ToInt32(element) + 10);
+                            dataGridView1.DataSource = ClientClass.DtClientBetween;
+                            Str10 = true;
+                        }
                         break;
                     case 20:
-                        ClientClass.SelectClientBetween(Convert.ToInt32(element) + 1, Convert.ToInt32(element) + 20);
-                        dataGridView1.DataSource = ClientClass.DtClientBetween;
-                        Str20 = true;
+                        if (mass[1] == true)
+                        {
+                            ClientClass.SelectClientBetween(Convert.ToInt32(element) + 1, Convert.ToInt32(element) + 20);
+                            dataGridView1.DataSource = ClientClass.DtClientBetween;
+                            Str20 = true;
+                        }
                         break;
                     case 30:
-                        ClientClass.SelectClientBetween(Convert.ToInt32(element) + 1, Convert.ToInt32(element) + 30);
-                        dataGridView1.DataSource = ClientClass.DtClientBetween;
-                        Str30 = true;
+                        if (mass[2] == true)
+                        {
+                            ClientClass.SelectClientBetween(Convert.ToInt32(element) + 1, Convert.ToInt32(element) + 30);
+                            dataGridView1.DataSource = ClientClass.DtClientBetween;
+                            Str30 = true;
+                        }
                         break;
                     default:
                             ClientClass.SelectClientBetween(Convert.ToInt32(element) + 1, Convert.ToInt32(element) + 10);
@@ -64,8 +73,8 @@ namespace PolomkaProgramm
             button2.Click += (s, e) =>
             {
                 int i = 0;
-                int[] numbers = new int[dataGridView1.Rows.Count - 1];
-                for (i = 0; i < dataGridView1.Rows.Count - 1; i++)
+                int[] numbers = new int[dataGridView1.Rows.Count];
+                for (i = 0; i < dataGridView1.Rows.Count; i++)
                 {
                     element = dataGridView1["ID", i].Value.ToString();
                     numbers[i] = Convert.ToInt32(dataGridView1["ID", i].Value.ToString());
@@ -74,36 +83,57 @@ namespace PolomkaProgramm
                 switch (i)
                 {
                     case 10:
-                        ClientClass.SelectClientBetween(Convert.ToInt32(element) - 10, Convert.ToInt32(element) - 1);
-                        if (Convert.ToInt32(ClientClass.CountClientIDRows) > 0)
-                            dataGridView1.DataSource = ClientClass.DtClientBetween;
+                        if (mass[0] == true)
+                        {
+                            ClientClass.SelectClientBetween(Convert.ToInt32(element) - 10, Convert.ToInt32(element) - 1);
+                            if (Convert.ToInt32(ClientClass.CountClientIDRows) > 0)
+                                dataGridView1.DataSource = ClientClass.DtClientBetween;
+                        }
+                        else if (mass[1] == true)
+                            goto case 20;
+                        else if (mass[2]==true)
+                            goto case 30;
                         break;
                     case 20:
-                        ClientClass.SelectClientBetween(Convert.ToInt32(element) - 20, Convert.ToInt32(element) - 1);
-                        if (Convert.ToInt32(ClientClass.CountClientIDRows) > 0)
-                            dataGridView1.DataSource = ClientClass.DtClientBetween;
+                        if (mass[1] == true)
+                        {
+                            ClientClass.SelectClientBetween(Convert.ToInt32(element) - 20, Convert.ToInt32(element) - 1);
+                            if (Convert.ToInt32(ClientClass.CountClientIDRows) > 0)
+                                dataGridView1.DataSource = ClientClass.DtClientBetween;
+                        }
+                        else if (mass[0] == true)
+                            goto case 10;
+                        else if (mass[2] == true)
+                            goto case 30;
                         break;
                     case 30:
-                        ClientClass.SelectClientBetween(Convert.ToInt32(element) - 30, Convert.ToInt32(element) - 1);
-                        if (Convert.ToInt32(ClientClass.CountClientIDRows) > 0)
-                            dataGridView1.DataSource = ClientClass.DtClientBetween;
+                        if (mass[2] == true)
+                        {
+                            ClientClass.SelectClientBetween(Convert.ToInt32(element) - 30, Convert.ToInt32(element) - 1);
+                            if (Convert.ToInt32(ClientClass.CountClientIDRows) > 0)
+                                dataGridView1.DataSource = ClientClass.DtClientBetween;
+                        }
+                        else if (mass[0] == true)
+                            goto case 10;
+                        else if (mass[1] == true)
+                            goto case 20;
                         break;
                     default:
-                        if (Str10 == true)
+                        if (Str10 == true & mass[0] == true)
                         {
                             ClientClass.SelectClientBetween(Convert.ToInt32(element) - 10, Convert.ToInt32(element) - 1);
                             if (Convert.ToInt32(ClientClass.CountClientIDRows) > 0)
                                 dataGridView1.DataSource = ClientClass.DtClientBetween;
                             Str10 = false;
                         }
-                        else if (Str20 == true)
+                        else if (Str20 == true & mass[1] == true)
                         {
                             ClientClass.SelectClientBetween(Convert.ToInt32(element) - 20, Convert.ToInt32(element) - 1);
                             if (Convert.ToInt32(ClientClass.CountClientIDRows) > 0)
                                 dataGridView1.DataSource = ClientClass.DtClientBetween;
                             Str20 = false;
                         }
-                        else if (Str30 == true)
+                        else if (Str30 == true & mass[2] == true)
                         {
                             ClientClass.SelectClientBetween(Convert.ToInt32(element) - 30, Convert.ToInt32(element) - 1);
                             if (Convert.ToInt32(ClientClass.CountClientIDRows) > 0)
@@ -116,6 +146,13 @@ namespace PolomkaProgramm
             button4.Click += (s, e) =>
             {
                 mass[0] = true;
+                for (int i = 0; i < mass.Length; i++)
+                {
+                    if (i == 0)
+                        continue;
+                    else
+                        mass[i] = false;
+                }
                 ProverkaTrueFals(0);
                 SwitchList();
                 button3.Enabled = true;
@@ -125,6 +162,13 @@ namespace PolomkaProgramm
             button5.Click += (s, e) =>
             {
                 mass[1] = true;
+                for (int i = 0; i < mass.Length; i++)
+                {
+                    if (i == 1)
+                        continue;
+                    else
+                        mass[i] = false;
+                }
                 ProverkaTrueFals(1);
                 SwitchList();
                 button3.Enabled = true;
@@ -134,6 +178,13 @@ namespace PolomkaProgramm
             button6.Click += (s, e) =>
             {
                 mass[2] = true;
+                for (int i = 0; i < mass.Length; i++)
+                {
+                    if (i == 2)
+                        continue;
+                    else
+                        mass[i] = false;
+                }
                 ProverkaTrueFals(2);
                 SwitchList();
                 button3.Enabled = true;
@@ -143,12 +194,20 @@ namespace PolomkaProgramm
             button7.Click += (s, e) =>
             {
                 mass[3] = true;
+                for (int i = 0; i < mass.Length; i++)
+                {
+                    if (i == 3)
+                        continue;
+                    else
+                        mass[i] = false;
+                }
                 ProverkaTrueFals(3);
                 SwitchList();
                 button3.Enabled = false;
                 button2.Enabled = false;
                 Otbor = true;
             };
+
         }
         private void ProverkaTrueFals(int start)
         {
@@ -163,7 +222,7 @@ namespace PolomkaProgramm
         private int CurrentPage()
         {
             int CountTagofclientRows;
-            CountTagofclientRows = dataGridView1.Rows.Count - 1;
+            CountTagofclientRows = dataGridView1.Rows.Count;
             return CountTagofclientRows;
         }
         private void SwitchList()
@@ -188,16 +247,14 @@ namespace PolomkaProgramm
             ClientClass.SelectClientLoad(start);
             dataGridView1.DataSource = ClientClass.DtClientLoad;
         }
-
-
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             int max, min;
 
             if (Otbor == true)
             {
-                numbers = new int[dataGridView1.Rows.Count - 1];
-                for (int i = 0; i < dataGridView1.Rows.Count - 1; i++)
+                numbers = new int[dataGridView1.Rows.Count];
+                for (int i = 0; i < dataGridView1.Rows.Count; i++)
                 {
                     numbers[i] = Convert.ToInt32(dataGridView1["ID", i].Value.ToString());
                 }
@@ -298,6 +355,26 @@ namespace PolomkaProgramm
                     return;
                 }
             }
+        }
+
+        private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            ClientClass.SelectTeg(dataGridView1.CurrentRow.Cells[0].Value.ToString());
+            dataGridView2.DataSource = ClientClass.DtSelectTeg;
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            int max, min;
+            numbers = new int[dataGridView1.Rows.Count];
+            for (int i = 0; i < dataGridView1.RowCount; i++)
+            {
+                numbers[i] = Convert.ToInt32(dataGridView1["ID", i].Value.ToString());
+            }
+            max = numbers.Max();
+            min = numbers.Min();
+            ClientClass.SortClientName(,);
+            dataGridView1.DataSource = ClientClass.DtSortClientName;
         }
     }
 }
